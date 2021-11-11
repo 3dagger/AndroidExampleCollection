@@ -1,0 +1,37 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EECCCCCC"
+        android:overScrollMode="never"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+<!--        <TextView-->
+<!--            android:id="@+id/pinned_top"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#50FF0000"-->
+<!--            android:padding="16dp"-->
+<!--            android:text="Top" />-->
+
+        <TextView
+            android:id="@+id/pinned_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#5000FF00"
+            android:padding="16dp"
+            android:text="Center" />
+
+        <TextView
+            android:id="@+id/pinned_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:background="#500000FF"
+            android:padding="16dp"
+            android:text="Bottom Button" />
+    </FrameLayout>
+</layout>
