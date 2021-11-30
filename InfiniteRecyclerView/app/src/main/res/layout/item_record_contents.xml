@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="dummy"
+            type="com.dagger.infiniterecyclerview.model.History" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="69dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/round_enrollment_btn_background">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <RelativeLayout
+                    android:id="@+id/contentsFirstRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_toLeftOf="@+id/txtPoint"
+                        android:fontFamily="@font/notosanskrmedium"
+                        android:text="우리동네 미고 (마래푸점)"
+                        android:textColor="#000000"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/txtPoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:layout_alignParentEnd="true"
+                        android:text="999p"
+                        android:textColor="#0091c1"
+                        android:textSize="15dp"
+                        android:fontFamily="@font/notosanskrbold"
+                        />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="2dp"
+                    android:layout_below="@id/contentsFirstRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="15dp"
+                        android:fontFamily="@font/notosanskrmedium"
+                        android:text="2021-05-01 09:00:00"
+                        android:textColor="#c1c1c1"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:text="잔여 마일리지 1,802p"
+                        android:layout_marginEnd="15dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#c1c1c1"
+                        android:fontFamily="@font/notosanskrmedium"
+                        android:textSize="10dp"
+                        />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+</layout>

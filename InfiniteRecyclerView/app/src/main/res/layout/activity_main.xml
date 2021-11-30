@@ -12,18 +12,28 @@
             type="com.dagger.infiniterecyclerview.ui.main.model.MainViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btnMove"
+            android:onClick="@{() -> activity.moveRecordActivity()}"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="MOVE"
+            android:backgroundTint="@color/cardview_dark_background"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:overScrollMode="never"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_below="@id/btnMove"/>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 
 </layout>

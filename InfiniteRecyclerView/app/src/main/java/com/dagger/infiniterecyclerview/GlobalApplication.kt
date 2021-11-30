@@ -25,7 +25,7 @@ class GlobalApplication : Application(){
             .showThreadInfo(true) // 쓰레드 보여줄 것인지
             .methodCount(2)        // 몇라인까지 출력할지, 기본값 2
             .methodOffset(5)       // 메서드 오프셋, 기본값 5
-            .tag("3dagger")      // 글로벌 태그
+            .tag("leeam")      // 글로벌 태그
             .build()
 
         // 디버그에서만 로그출력

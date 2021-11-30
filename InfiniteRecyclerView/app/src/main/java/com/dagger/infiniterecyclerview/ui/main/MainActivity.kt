@@ -1,5 +1,6 @@
 package com.dagger.infiniterecyclerview.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import com.dagger.infiniterecyclerview.adapter.NoticeRecyclerViewAdapter
 import com.dagger.infiniterecyclerview.base.BaseActivity
 import com.dagger.infiniterecyclerview.databinding.ActivityMainBinding
 import com.dagger.infiniterecyclerview.ui.main.model.MainViewModel
+import com.dagger.infiniterecyclerview.ui.record.RecordActivity
 import com.orhanobut.logger.Logger
 import org.koin.android.ext.android.inject
 
@@ -32,6 +34,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
     override fun onProcess() {
         initViewSetup()
         subscribeObservers()
+    }
+
+    fun moveRecordActivity() {
+        startActivity(Intent(this@MainActivity, RecordActivity::class.java))
     }
 
     /**
