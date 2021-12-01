@@ -12,5 +12,5 @@ interface RemoteService {
     fun onLoadNotice(@Query("page") page: Int): Single<Response<BaeminDummyData>>
 
     @GET("https://0505fc60-494d-4010-9936-6c5e2398a10c.mock.pstmn.io/record")
-    fun onLoadRecord(): Single<Response<RecordDummyData>>
+    fun onLoadRecord(@Query("page") page:Int): Single<Response<RecordDummyData>>
 }

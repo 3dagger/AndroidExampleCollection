@@ -16,13 +16,8 @@ class MainViewModel(private val remoteService: RemoteService) : BaseViewModel<Ma
     val noticeData : MutableLiveData<BaeminDummyData>
         get() = _noticeData
 
-    private val _recordData = MutableLiveData<RecordDummyData>()
-    val recordData : MutableLiveData<RecordDummyData>
-        get() = _recordData
-
     init {
         onLoadNoticeData(page = 1)
-        onLoadRecordData()
     }
 
     override fun onLoadNoticeData(page: Int) {
@@ -31,18 +26,6 @@ class MainViewModel(private val remoteService: RemoteService) : BaseViewModel<Ma
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _noticeData.value = it.body()
-            }, {
-
-            }))
-    }
-
-    fun onLoadRecordData() {
-        addDisposable(remoteService.onLoadRecord()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Logger.d("result :: ${it.body()}")
-                _recordData.value = it.body()
             }, {
 
             }))

@@ -1,12 +1,14 @@
 package com.dagger.infiniterecyclerview
 
 import android.app.Application
+import android.content.ContextWrapper
 import com.dagger.infiniterecyclerview.di.apiModules
 import com.dagger.infiniterecyclerview.di.networkModules
 import com.dagger.infiniterecyclerview.di.viewModelModules
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
+import com.pixplicity.easyprefs.library.Prefs
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -34,5 +36,13 @@ class GlobalApplication : Application(){
                  return BuildConfig.DEBUG
             }
         })
+
+        // init Easy Pref
+        Prefs.Builder()
+            .setContext(this)
+            .setMode(ContextWrapper.MODE_PRIVATE)
+            .setPrefsName(packageName)
+            .setUseDefaultSharedPreference(true)
+            .build()
     }
 }

@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="dummy"
-            type="com.dagger.infiniterecyclerview.model.History" />
+            type="com.dagger.infiniterecyclerview.model.RentList" />
     </data>
 
     <RelativeLayout
@@ -41,7 +41,7 @@
                         android:layout_marginEnd="24dp"
                         android:layout_toLeftOf="@+id/txtPoint"
                         android:fontFamily="@font/notosanskrmedium"
-                        android:text="우리동네 미고 (마래푸점)"
+                        android:text="@{dummy.title}"
                         android:textColor="#000000"
                         android:textSize="12dp" />
 
@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
                         android:layout_alignParentEnd="true"
-                        android:text="999p"
+                        android:text="@{dummy.mileage}"
                         android:textColor="#0091c1"
                         android:textSize="15dp"
                         android:fontFamily="@font/notosanskrbold"
@@ -71,12 +71,12 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="15dp"
                         android:fontFamily="@font/notosanskrmedium"
-                        android:text="2021-05-01 09:00:00"
+                        android:text="@{dummy.createDate}"
                         android:textColor="#c1c1c1"
                         android:textSize="12dp" />
 
                     <TextView
-                        android:text="잔여 마일리지 1,802p"
+                        android:text="@{`잔여 마일리지 ` + dummy.createDate}"
                         android:layout_marginEnd="15dp"
                         android:layout_alignParentEnd="true"
                         android:layout_width="wrap_content"
