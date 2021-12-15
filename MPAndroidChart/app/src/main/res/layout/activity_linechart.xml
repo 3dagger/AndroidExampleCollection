@@ -14,7 +14,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.github.mikephil.charting.charts.LineChart
+<!--                <com.github.mikephil.charting.charts.LineChart-->
+                <com.dagger.mpandroidchart.ui.linechart.custom.CustomLineChart
                     android:id="@+id/lineChart"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginStart="50dp"
