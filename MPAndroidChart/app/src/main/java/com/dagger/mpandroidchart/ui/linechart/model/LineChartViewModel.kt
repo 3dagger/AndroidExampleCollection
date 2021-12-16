@@ -17,15 +17,18 @@ class LineChartViewModel(private val remoteService: RemoteService) : BaseViewMod
         get() = _bikeReportData
 
     val entryData = ArrayList<Entry>()
-
+    val lastEntryData = ArrayList<Entry>()
     val dayData = ArrayList<String>()
 
     private val _batteryUsageEntryData = MutableLiveData<ArrayList<Entry>>()
     val batteryUsageEntryData : MutableLiveData<ArrayList<Entry>>
         get() = _batteryUsageEntryData
 
+
+
     init {
-        onLoadPersonalBikeReport(period = "day")
+//        onLoadPersonalBikeReport(period = "day")
+        onLoadMockReport()
     }
 
     fun onLoadPersonalBikeReport(period: String) {
@@ -46,19 +49,31 @@ class LineChartViewModel(private val remoteService: RemoteService) : BaseViewMod
 //    }
 
 
-    // Entry x value 는 0 1 2 3 4 5 6 사이즈 만큼 추가해주고 Formatter에서 값을 수정해야 함
     fun onPrepareBatteryUsageEntryData(reportData: ReportData) {
-        Logger.d("prepare")
         entryData.clear()
-        dayData.clear()
-//        Logger.d("convert :: ${reportData.socReport.toSortedMap()}\nraw :: ${reportData}")
+        lastEntryData.clear()
 
         reportData.socReport.toSortedMap().forEach { (key, value) ->
             entryData.add(Entry(key.toFloat(), value.toFloat()))
-            dayData.add(key)
         }
+        lastEntryData.add(entryData[entryData.lastIndex])
+//        entryData.removeAt(entryData.lastIndex)
+
 
         _batteryUsageEntryData.value = entryData
+    }
+
+    fun onLoadMockReport() {
+        addDisposable(remoteService.apiMockBikeReport()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Logger.d("mock api :: ${it.body()}")
+                _bikeReportData.value = it.body()
+                onPrepareBatteryUsageEntryData(reportData = it.body()!!)
+            }, {
+
+            }))
     }
 
 

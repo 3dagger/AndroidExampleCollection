@@ -17,6 +17,7 @@ import java.util.HashMap
 import android.graphics.BitmapFactory
 
 import android.graphics.Bitmap
+import android.os.Build
 import androidx.core.content.ContextCompat
 import com.dagger.mpandroidchart.R
 import com.orhanobut.logger.Logger
@@ -427,7 +428,14 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
                     }
                     val entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min)
                     if (dataSet.isDrawValuesEnabled) {
-                        drawValue(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2))
+                        Logger.d("dataSet :: ${dataSet.entryCount}\nj :: $j\npositions :: $positions\npositions size :: ${positions.size}")
+                        if(j == positions.size - 2) {
+                            drawValue2(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2))
+                        }else {
+                            drawValue(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2))
+                        }
+
+//                        drawValue(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2))
                     }
                     if (entry.icon != null && dataSet.isDrawIconsEnabled) {
                         val icon = entry.icon
@@ -440,10 +448,31 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
         }
     }
 
+    /**
+     * @author : 이수현
+     * @Date : 2021/12/16 4:24 오후
+     * @Description : 마지막 아이템 수정 메서드
+     * @History :
+     *
+     **/
+    private fun drawValue2(c: Canvas, valueText: String, x: Float, y: Float, color: Int) {
+        Utils.drawImage(c, ContextCompat.getDrawable(context, R.drawable.chart_point_item_background), x.toInt(), y.toInt() - 45, 55, 30)
+        mValuePaint.color = color
+        c.drawText(valueText, x, y - 20, mValuePaint)
+    }
+
+
     override fun drawValue(c: Canvas, valueText: String, x: Float, y: Float, color: Int) {
-        Logger.d("canvas :: c\nvalueText :: $valueText\nx :: $x\ny :: $y\ncolor :: $color")
+
+        /**
+         * @author : 이수현
+         * @Date : 2021/12/16 1:57 오후
+         * @Description : 수정
+         * @History :
+         *
+         **/
+//        Logger.d("valueText :: $valueText\nx :: $x\ny :: $y\ncolor :: $color")
         Utils.drawImage(c, ContextCompat.getDrawable(context, R.drawable.chart_item_background), x.toInt(), y.toInt() - 40, 55, 30)
-//        Utils.drawImage(c, ContextCompat.getDrawable(context, R.drawable.chart_item_background), x.toInt(), y.toInt() - 40, mValuePaint, 30)
         mValuePaint.color = color
         c.drawText(valueText, x, y - 20, mValuePaint)
     }
@@ -475,10 +504,8 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             mXBounds[mChart] = dataSet
             val circleRadius = dataSet.circleRadius
             val circleHoleRadius = dataSet.circleHoleRadius
-            val drawCircleHole =
-                dataSet.isDrawCircleHoleEnabled && circleHoleRadius < circleRadius && circleHoleRadius > 0f
-            val drawTransparentCircleHole = drawCircleHole &&
-                    dataSet.circleHoleColor == ColorTemplate.COLOR_NONE
+            val drawCircleHole = dataSet.isDrawCircleHoleEnabled && circleHoleRadius < circleRadius && circleHoleRadius > 0f
+            val drawTransparentCircleHole = drawCircleHole && dataSet.circleHoleColor == ColorTemplate.COLOR_NONE
             var imageCache: DataSetImageCache?
             if (mImageCaches.containsKey(dataSet)) {
                 imageCache = mImageCaches[dataSet]
@@ -503,13 +530,10 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
                     !mViewPortHandler.isInBoundsY(mCirclesBuffer[1])
                 ) continue
                 val circleBitmap = imageCache.getBitmap(j)
+
+
                 if (circleBitmap != null) {
-                    c.drawBitmap(
-                        circleBitmap,
-                        mCirclesBuffer[0] - circleRadius,
-                        mCirclesBuffer[1] - circleRadius,
-                        null
-                    )
+                    c.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, null)
                 }
             }
         }
@@ -601,24 +625,17 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             val colorCount = set.circleColorCount
             val circleRadius = set.circleRadius
             val circleHoleRadius = set.circleHoleRadius
+
             for (i in 0 until colorCount) {
                 val conf = Bitmap.Config.ARGB_4444
-                val circleBitmap = Bitmap.createBitmap(
-                    (circleRadius * 2.1).toInt(),
-                    (circleRadius * 2.1).toInt(), conf
-                )
+                val circleBitmap = Bitmap.createBitmap((circleRadius * 2.1).toInt(), (circleRadius * 2.1).toInt(), conf)
                 val canvas = Canvas(circleBitmap)
                 circleBitmaps!![i] = circleBitmap
                 mRenderPaint.color = set.getCircleColor(i)
                 if (drawTransparentCircleHole) {
                     // Begin path for circle with hole
                     mCirclePathBuffer.reset()
-                    mCirclePathBuffer.addCircle(
-                        circleRadius,
-                        circleRadius,
-                        circleRadius,
-                        Path.Direction.CW
-                    )
+                    mCirclePathBuffer.addCircle(circleRadius, circleRadius, circleRadius, Path.Direction.CW)
 
                     // Cut hole in path
                     mCirclePathBuffer.addCircle(
@@ -631,19 +648,9 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
                     // Fill in-between
                     canvas.drawPath(mCirclePathBuffer, mRenderPaint)
                 } else {
-                    canvas.drawCircle(
-                        circleRadius,
-                        circleRadius,
-                        circleRadius,
-                        mRenderPaint
-                    )
+                    canvas.drawCircle(circleRadius, circleRadius, circleRadius, mRenderPaint)
                     if (drawCircleHole) {
-                        canvas.drawCircle(
-                            circleRadius,
-                            circleRadius,
-                            circleHoleRadius,
-                            mCirclePaintInner
-                        )
+                        canvas.drawCircle(circleRadius, circleRadius, circleHoleRadius, mCirclePaintInner)
                     }
                 }
             }
