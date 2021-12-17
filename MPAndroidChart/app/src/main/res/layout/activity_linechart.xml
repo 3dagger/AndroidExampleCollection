@@ -2,18 +2,232 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="activity"
+            type="com.dagger.mpandroidchart.ui.linechart.LineChartActivity" />
+        <variable
+            name="vm"
+            type="com.dagger.mpandroidchart.ui.linechart.model.LineChartViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.dagger.mpandroidchart.ui.linechart.custom.CustomLineChart
-            android:id="@+id/lineChart"
-            android:layout_centerInParent="true"
-            android:layout_margin="15dp"
+        <androidx.appcompat.widget.AppCompatToggleButton
+            android:id="@+id/btnToggle"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/switch_track" />
+
+        <RelativeLayout
+            android:id="@+id/aa"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_width="match_parent"
-            android:layout_height="250dp"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btnToggle">
+
+            <TextView
+                android:text="스테이션 사용 리포트"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:textSize="15dp"
+                android:textColor="#000000"
+                android:fontFamily="@font/notosanskrbold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardBatteryExchangeCount"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="6dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@id/aa"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="320:52">
 
 
-    </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="배터리 교환 횟수"
+                    android:layout_marginStart="15dp"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/notosanskrmedium"
+                    android:textColor="#000000"
+                    android:textSize="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/txtChangeCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:fontFamily="@font/notosanskrbold"
+                    android:text="@{vm.batteryChangeCount}"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                    android:layout_marginEnd="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/updownbackground"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_centerVertical="true"
+                            android:id="@+id/imgUpOrDown"
+                            android:src="@drawable/ic_icon_down"
+                            android:scaleType="fitXY"
+                            android:layout_width="15dp"
+                            android:layout_height="12dp"/>
+
+                        <TextView
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/imgUpOrDown"
+                            android:text="10"
+                            android:textSize="10dp"
+                            android:textColor="#2cafdd"
+                            android:fontFamily="@font/notosanskrmedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </RelativeLayout>
+
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardBatteryUseCount"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="6dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@id/cardBatteryExchangeCount"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="320:52">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="배터리 사용량"
+                    android:layout_marginStart="15dp"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/notosanskrmedium"
+                    android:textColor="#000000"
+                    android:textSize="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+<!--                android:text="@{vm.bikeReportData.setSocReport.}"-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:fontFamily="@font/notosanskrbold"
+                    android:text="@{vm.socUseCount + `SOC`}"
+                    android:textColor="#000000" />
+
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="6dp"
+            app:contentPadding="15dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@id/cardBatteryUseCount"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="320:143">
+
+            <com.dagger.mpandroidchart.ui.linechart.custom.CustomLineChart
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <RelativeLayout-->
+<!--        android:background="@color/white"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <androidx.appcompat.widget.SwitchCompat-->
+<!--            android:visibility="gone"-->
+<!--            android:id="@+id/switcha"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:fontFamily="@font/notosanskrbold"-->
+<!--            android:textColor="#000000"-->
+<!--            android:thumb="@drawable/switch_thumb"-->
+<!--            app:showText="true"-->
+<!--            app:track="@drawable/switch_track">-->
+
+<!--        </androidx.appcompat.widget.SwitchCompat>-->
+
+
+
+<!--    </RelativeLayout>-->
 
 </layout>

@@ -428,7 +428,7 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
                     }
                     val entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min)
                     if (dataSet.isDrawValuesEnabled) {
-                        Logger.d("dataSet :: ${dataSet.entryCount}\nj :: $j\npositions :: $positions\npositions size :: ${positions.size}")
+//                        Logger.d("dataSet :: ${dataSet.entryCount}\nj :: $j\npositions :: $positions\npositions size :: ${positions.size}")
                         if(j == positions.size - 2) {
                             drawValue2(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2))
                         }else {

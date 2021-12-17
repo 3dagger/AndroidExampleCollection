@@ -1,5 +1,6 @@
 package com.dagger.mpandroidchart.ui.linechart.model
 
+import android.R.attr
 import androidx.lifecycle.MutableLiveData
 import com.dagger.mpandroidchart.Constants
 import com.dagger.mpandroidchart.base.BaseViewModel
@@ -10,6 +11,10 @@ import com.github.mikephil.charting.data.Entry
 import com.orhanobut.logger.Logger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import android.R.attr.data
+
+
+
 
 class LineChartViewModel(private val remoteService: RemoteService) : BaseViewModel<LineChartNavigator.View>(), LineChartNavigator.ViewModel{
     private val _bikeReportData = MutableLiveData<ReportData>()
@@ -24,11 +29,14 @@ class LineChartViewModel(private val remoteService: RemoteService) : BaseViewMod
     val batteryUsageEntryData : MutableLiveData<ArrayList<Entry>>
         get() = _batteryUsageEntryData
 
+    var batteryChangeCount = MutableLiveData<Int>()
+    var socUseCount = MutableLiveData<Int>()
+
+
 
 
     init {
-//        onLoadPersonalBikeReport(period = "day")
-        onLoadMockReport()
+        onLoadPersonalBikeReport(period = "day")
     }
 
     fun onLoadPersonalBikeReport(period: String) {
@@ -37,28 +45,34 @@ class LineChartViewModel(private val remoteService: RemoteService) : BaseViewMod
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _bikeReportData.value = it.body()
+
+                val a = arrayListOf<Int>()
+                a.clear()
+                it.body()?.socReport!!.mapValues { (key, value) -> a.add(value) }
+                socUseCount.value = a.last()
+
+
+                val b = arrayListOf<Int>()
+                b.clear()
+                it.body()?.countReport!!.mapValues { (key, value) -> b.add(value) }
+                batteryChangeCount.value = b.last()
+                
+                
                 onPrepareBatteryUsageEntryData(reportData = it.body()!!)
             }, {
 
             }))
     }
 
-//    fun onPrepareBatteryUsageEntryData(reportData: ReportData) {
-//        entryData.clear()
-//        reportData.socReport.forEach { (key, value) -> entryData.add(Entry(key.toFloat(), value.toFloat())) }
-//    }
-
 
     fun onPrepareBatteryUsageEntryData(reportData: ReportData) {
         entryData.clear()
         lastEntryData.clear()
 
-        reportData.socReport.toSortedMap().forEach { (key, value) ->
+        reportData.socReport.forEach { (key, value) ->
             entryData.add(Entry(key.toFloat(), value.toFloat()))
         }
         lastEntryData.add(entryData[entryData.lastIndex])
-//        entryData.removeAt(entryData.lastIndex)
-
 
         _batteryUsageEntryData.value = entryData
     }

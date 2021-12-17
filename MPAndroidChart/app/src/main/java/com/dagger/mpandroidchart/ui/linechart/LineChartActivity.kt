@@ -37,6 +37,12 @@ class LineChartActivity : BaseActivity<ActivityLinechartBinding, LineChartViewMo
 
     override fun initView(savedInstanceState: Bundle?) {
         viewModel.setNavigator(this@LineChartActivity)
+
+        viewDataBinding.run {
+            lifecycleOwner = this@LineChartActivity
+            activity = this@LineChartActivity
+            vm = viewModel
+        }
     }
 
     override fun onProcess() {
@@ -45,7 +51,15 @@ class LineChartActivity : BaseActivity<ActivityLinechartBinding, LineChartViewMo
     }
 
     private fun initViewSetup() {
-//        onPrepareLineChartSecond()
+        viewDataBinding.btnToggle.textOn = "일별"
+        viewDataBinding.btnToggle.textOff = "월별"
+//
+     viewDataBinding.btnToggle.setOnCheckedChangeListener { _, b ->
+         when(b){
+             true -> { viewModel.onLoadPersonalBikeReport("day") }
+             false -> viewModel.onLoadPersonalBikeReport("month")
+         }
+     }
     }
 
     private fun subscribeObservers() {
@@ -55,9 +69,6 @@ class LineChartActivity : BaseActivity<ActivityLinechartBinding, LineChartViewMo
     }
 
     private fun onPrepareLineChartFirst(list: ArrayList<Entry>, lastItem: ArrayList<Entry>) {
-        val tt = arrayListOf(Entry(12.15f, 4f), Entry(12.16f, 6f))
-
-
         viewDataBinding.lineChart.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
@@ -86,12 +97,14 @@ class LineChartActivity : BaseActivity<ActivityLinechartBinding, LineChartViewMo
                 valueFormatter = MyXAxisFormatter3()
             }
 
-
+            extraTopOffset = 30F
             extraBottomOffset = 30F
             legend.isEnabled = false //차트 범례 설정
             axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
             setTouchEnabled(false) // 그래프 터치해도 아무 변화없게 막음
 //            animateX(1000) // 밑에서부터 올라오는 애니매이션 적용
+//            animateXY(1000, 1000)
+            animateX(300)
         }
 
         // 단위 DP
@@ -141,6 +154,10 @@ class LineChartActivity : BaseActivity<ActivityLinechartBinding, LineChartViewMo
             this.data = data //차트의 데이터를 data로 설정해줌.
             invalidate()
         }
+    }
+
+    fun setFirstData() {
+
     }
 
     override fun onViewModelCleared() {
