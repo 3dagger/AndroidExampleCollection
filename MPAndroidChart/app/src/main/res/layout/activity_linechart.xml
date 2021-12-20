@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="activity"
             type="com.dagger.mpandroidchart.ui.linechart.LineChartActivity" />
+
         <variable
             name="vm"
             type="com.dagger.mpandroidchart.ui.linechart.model.LineChartViewModel" />
@@ -21,29 +25,29 @@
             android:id="@+id/btnToggle"
             android:layout_width="150dp"
             android:layout_height="100dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/switch_track"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:background="@drawable/switch_track" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <RelativeLayout
             android:id="@+id/aa"
-            android:layout_marginTop="50dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintTop_toBottomOf="@id/btnToggle">
 
             <TextView
-                android:text="스테이션 사용 리포트"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:textSize="15dp"
-                android:textColor="#000000"
-                android:fontFamily="@font/notosanskrbold"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/notosanskrbold"
+                android:text="스테이션 사용 리포트"
+                android:textColor="#000000"
+                android:textSize="15dp" />
 
         </RelativeLayout>
 
@@ -52,16 +56,16 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="10dp"
             app:cardElevation="6dp"
             app:cardUseCompatPadding="true"
-            app:layout_constraintTop_toBottomOf="@id/aa"
+            app:layout_constraintDimensionRatio="320:52"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintDimensionRatio="320:52">
+            app:layout_constraintTop_toBottomOf="@id/aa">
 
 
             <RelativeLayout
@@ -69,66 +73,58 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:text="배터리 교환 횟수"
-                    android:layout_marginStart="15dp"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/notosanskrmedium"
-                    android:textColor="#000000"
-                    android:textSize="12dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/notosanskrmedium"
+                    android:text="배터리 교환 횟수"
+                    android:textColor="#000000"
+                    android:textSize="12dp" />
 
                 <TextView
-                    android:id="@+id/txtChangeCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="22dp"
+                    android:text="@{vm.batteryChangeCount.toString() + `회`}"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/notosanskrbold"
+                    android:layout_toStartOf="@id/batteryChangeUpDownRl"
+                    android:layout_marginEnd="10dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/batteryChangeUpDownRl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="15dp"
-                    android:fontFamily="@font/notosanskrbold"
-                    android:text="@{vm.batteryChangeCount}"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <RelativeLayout
-                    android:layout_marginEnd="15dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:background="@drawable/updownbackground"
-                    >
+                    android:paddingLeft="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="5dp">
 
-                    <RelativeLayout
+
+                    <ImageView
+                        bindUserBatteryUsageArrowImage="@{vm.batteryChangeComparePreviousDay}"
+                        android:id="@+id/imgUpOrDown"
+                        android:layout_width="15dp"
+                        android:layout_height="12dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        bindJudgementCount="@{vm.batteryChangeComparePreviousDay}"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_centerVertical="true"
-                            android:id="@+id/imgUpOrDown"
-                            android:src="@drawable/ic_icon_down"
-                            android:scaleType="fitXY"
-                            android:layout_width="15dp"
-                            android:layout_height="12dp"/>
-
-                        <TextView
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/imgUpOrDown"
-                            android:text="10"
-                            android:textSize="10dp"
-                            android:textColor="#2cafdd"
-                            android:fontFamily="@font/notosanskrmedium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
-                    </RelativeLayout>
-
-
-
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imgUpOrDown"
+                        android:fontFamily="@font/notosanskrmedium"
+                        android:textColor="#2cafdd"
+                        android:textSize="10dp" />
                 </RelativeLayout>
+
 
             </RelativeLayout>
 
@@ -145,10 +141,10 @@
             app:cardCornerRadius="10dp"
             app:cardElevation="6dp"
             app:cardUseCompatPadding="true"
-            app:layout_constraintTop_toBottomOf="@id/cardBatteryExchangeCount"
+            app:layout_constraintDimensionRatio="320:52"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintDimensionRatio="320:52">
+            app:layout_constraintTop_toBottomOf="@id/cardBatteryExchangeCount">
 
 
             <RelativeLayout
@@ -156,25 +152,57 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:text="배터리 사용량"
-                    android:layout_marginStart="15dp"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/notosanskrmedium"
-                    android:textColor="#000000"
-                    android:textSize="12dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/notosanskrmedium"
+                    android:text="배터리 사용량"
+                    android:textColor="#000000"
+                    android:textSize="12dp" />
 
-<!--                android:text="@{vm.bikeReportData.setSocReport.}"-->
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="22dp"
+                    android:text="@{vm.socUseCount.toString() + `SOC`}"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/notosanskrbold"
+                    android:layout_toStartOf="@id/batteryUseUpDownRl"
+                    android:layout_marginEnd="10dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/batteryUseUpDownRl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="15dp"
-                    android:fontFamily="@font/notosanskrbold"
-                    android:text="@{vm.socUseCount + `SOC`}"
-                    android:textColor="#000000" />
+                    android:background="@drawable/updownbackground"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="5dp">
+
+
+                    <ImageView
+                        bindUserBatteryUsageArrowImage="@{vm.socCountComparePreviousDay}"
+                        android:id="@+id/imgBatteryUseUpOrDown"
+                        android:layout_width="15dp"
+                        android:layout_height="12dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        bindJudgementCount="@{vm.socCountComparePreviousDay}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imgBatteryUseUpOrDown"
+                        android:fontFamily="@font/notosanskrmedium"
+                        android:textColor="#2cafdd"
+                        android:textSize="10dp" />
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -189,45 +217,43 @@
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="10dp"
             app:cardElevation="6dp"
-            app:contentPadding="15dp"
             app:cardUseCompatPadding="true"
-            app:layout_constraintTop_toBottomOf="@id/cardBatteryUseCount"
+            app:contentPadding="15dp"
+            app:layout_constraintDimensionRatio="320:143"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintDimensionRatio="320:143">
+            app:layout_constraintTop_toBottomOf="@id/cardBatteryUseCount">
 
             <com.dagger.mpandroidchart.ui.linechart.custom.CustomLineChart
                 android:id="@+id/lineChart"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
 
         </androidx.cardview.widget.CardView>
 
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    <RelativeLayout-->
-<!--        android:background="@color/white"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
+    <!--    <RelativeLayout-->
+    <!--        android:background="@color/white"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
 
-<!--        <androidx.appcompat.widget.SwitchCompat-->
-<!--            android:visibility="gone"-->
-<!--            android:id="@+id/switcha"-->
-<!--            android:layout_width="150dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:fontFamily="@font/notosanskrbold"-->
-<!--            android:textColor="#000000"-->
-<!--            android:thumb="@drawable/switch_thumb"-->
-<!--            app:showText="true"-->
-<!--            app:track="@drawable/switch_track">-->
+    <!--        <androidx.appcompat.widget.SwitchCompat-->
+    <!--            android:visibility="gone"-->
+    <!--            android:id="@+id/switcha"-->
+    <!--            android:layout_width="150dp"-->
+    <!--            android:layout_height="100dp"-->
+    <!--            android:fontFamily="@font/notosanskrbold"-->
+    <!--            android:textColor="#000000"-->
+    <!--            android:thumb="@drawable/switch_thumb"-->
+    <!--            app:showText="true"-->
+    <!--            app:track="@drawable/switch_track">-->
 
-<!--        </androidx.appcompat.widget.SwitchCompat>-->
+    <!--        </androidx.appcompat.widget.SwitchCompat>-->
 
 
-
-<!--    </RelativeLayout>-->
+    <!--    </RelativeLayout>-->
 
 </layout>

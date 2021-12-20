@@ -31,12 +31,14 @@ class LineChartViewModel(private val remoteService: RemoteService) : BaseViewMod
 
     var batteryChangeCount = MutableLiveData<Int>()
     var socUseCount = MutableLiveData<Int>()
-
+    val batteryChangeComparePreviousDay = MutableLiveData<Int>()
+    val socCountComparePreviousDay = MutableLiveData<Int>()
 
 
 
     init {
         onLoadPersonalBikeReport(period = "day")
+//        onLoadMockReport()
     }
 
     fun onLoadPersonalBikeReport(period: String) {
@@ -50,14 +52,15 @@ class LineChartViewModel(private val remoteService: RemoteService) : BaseViewMod
                 a.clear()
                 it.body()?.socReport!!.mapValues { (key, value) -> a.add(value) }
                 socUseCount.value = a.last()
+                socCountComparePreviousDay.value = a.last() - a[a.lastIndex - 1]
 
 
                 val b = arrayListOf<Int>()
                 b.clear()
                 it.body()?.countReport!!.mapValues { (key, value) -> b.add(value) }
                 batteryChangeCount.value = b.last()
-                
-                
+                batteryChangeComparePreviousDay.value = b.last() - b[b.lastIndex - 1]
+
                 onPrepareBatteryUsageEntryData(reportData = it.body()!!)
             }, {
 
@@ -82,8 +85,21 @@ class LineChartViewModel(private val remoteService: RemoteService) : BaseViewMod
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Logger.d("mock api :: ${it.body()}")
                 _bikeReportData.value = it.body()
+
+                val a = arrayListOf<Int>()
+                a.clear()
+                it.body()?.socReport!!.mapValues { (key, value) -> a.add(value) }
+                socUseCount.value = a.last()
+                socCountComparePreviousDay.value = a.last() - a[a.lastIndex - 1]
+
+
+                val b = arrayListOf<Int>()
+                b.clear()
+                it.body()?.countReport!!.mapValues { (key, value) -> b.add(value) }
+                batteryChangeCount.value = b.last()
+                batteryChangeComparePreviousDay.value = b.last() - b[b.lastIndex - 1]
+
                 onPrepareBatteryUsageEntryData(reportData = it.body()!!)
             }, {
 
