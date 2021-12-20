@@ -49,7 +49,6 @@ fun TextView.bindUserBatteryUsageText(value : Int) {
 
 @BindingAdapter("bindUserBatteryUsageArrowImage")
 fun ImageView.bindUserBatteryUsageArrowImage(value: Int) {
-    Logger.d("value :: $value")
     when {
         value > 0 -> this.setImageResource(R.drawable.ic_icon_up)
         value < 0 -> this.setImageResource(R.drawable.ic_icon_down)
