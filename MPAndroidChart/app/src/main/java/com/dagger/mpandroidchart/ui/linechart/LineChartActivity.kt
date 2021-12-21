@@ -2,7 +2,10 @@ package com.dagger.mpandroidchart.ui.linechart
 
 import android.graphics.Color
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
@@ -79,14 +82,13 @@ class LineChartActivity : BaseActivity<ActivityLinechartBinding, LineChartViewMo
                         showProgress()
                         viewModel.onLoadPersonalBikeReport(period = "month")
 //                        viewModel.onLoadMockReport(period = "month")
-                    }.setDuration(200).translationX(170F).start()
+                    }.setDuration(200).translationX(viewDataBinding.guideline1.x).start()
                     viewDataBinding.viewTv2.setTextColor(Color.parseColor("#909090"))
                     viewDataBinding.viewTv2.typeface = ResourcesCompat.getFont(this@LineChartActivity, R.font.notosanskrmedium)
                     viewDataBinding.subScriberTv2.setTextColor(Color.parseColor("#4b4b4b"))
                     viewDataBinding.subScriberTv2.typeface = ResourcesCompat.getFont(this@LineChartActivity, R.font.notosanskrbold)
                 }
             }
-
         })
 
         viewModel.batteryUsageEntryData.observe(this@LineChartActivity, Observer {
