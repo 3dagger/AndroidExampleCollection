@@ -8,12 +8,9 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 
 interface RemoteService {
-    //@GET("${ApiData.API_PAYMENTS}{tid}")
-    //    fun apiPaymentsResult(@Header("X-AUTH-TOKEN") token: String, @Path("tid") tid: String?) : Single<Response<PaymentResult>>
     @GET("https://api-dev.aims-rnd.com/api/rent/report/{period}")
     fun apiLoadPersonalBikeReport(@Header("X-AUTH-TOKEN") token: String, @Path("period") period: String) : Single<Response<ReportData>>
 
-    @GET("https://0505fc60-494d-4010-9936-6c5e2398a10c.mock.pstmn.io/report")
-    fun apiMockBikeReport() : Single<Response<ReportData>>
-
+    @GET("https://0505fc60-494d-4010-9936-6c5e2398a10c.mock.pstmn.io/report/{period}")
+    fun apiMockBikeReport(@Path("period") period: String) : Single<Response<ReportData>>
 }

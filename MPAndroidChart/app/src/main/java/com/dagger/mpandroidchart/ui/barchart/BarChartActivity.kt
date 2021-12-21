@@ -10,9 +10,7 @@ import com.dagger.mpandroidchart.ui.barchart.model.BarChartViewModel
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
@@ -24,22 +22,27 @@ class BarChartActivity : BaseActivity<ActivityBarchartBinding, BarChartViewModel
 
     override fun initView(savedInstanceState: Bundle?) {
         viewModel.setNavigator(this@BarChartActivity)
-        val lineChart: LineChart = findViewById<View>(R.id.lineChart) as LineChart
 
-        val entries: ArrayList<Entry> = ArrayList()
-        entries.add(Entry(20f, 0F))
-        entries.add(Entry(11f, 1F))
-        entries.add(Entry(10f, 2F))
-        entries.add(Entry(2f, 3F))
-        entries.add(Entry(18f, 4F))
-        entries.add(Entry(9f, 5F))
-        entries.add(Entry(16f, 6F))
-        entries.add(Entry(5f, 7F))
-        entries.add(Entry(3f, 8F))
-        entries.add(Entry(7f, 10F))
-        entries.add(Entry(9f, 11F))
+        viewDataBinding.run {
+            lifecycleOwner = this@BarChartActivity
+            activity = this@BarChartActivity
+            vm = viewModel
+        }
 
-        val dataset = LineDataSet(entries, "# of Calls")
+        val entries: ArrayList<BarEntry> = ArrayList()
+        entries.add(BarEntry(20f, 0F))
+        entries.add(BarEntry(11f, 1F))
+        entries.add(BarEntry(10f, 2F))
+        entries.add(BarEntry(2f, 3F))
+        entries.add(BarEntry(18f, 4F))
+        entries.add(BarEntry(9f, 5F))
+        entries.add(BarEntry(16f, 6F))
+        entries.add(BarEntry(5f, 7F))
+        entries.add(BarEntry(3f, 8F))
+        entries.add(BarEntry(7f, 10F))
+        entries.add(BarEntry(9f, 11F))
+
+        val dataset = BarDataSet(entries, "FirstData")
 
         val labels = ArrayList<String>()
         labels.add("January")
@@ -55,23 +58,19 @@ class BarChartActivity : BaseActivity<ActivityBarchartBinding, BarChartViewModel
         labels.add("November")
         labels.add("December")
 
-        lineChart.axisRight.isEnabled = false
-        lineChart.xAxis.apply {
-            position = XAxis.XAxisPosition.BOTTOM
-            setDrawAxisLine(false)
+        viewDataBinding.barChart.apply {
+            axisRight.isEnabled = false
+            xAxis.apply {
+                position = XAxis.XAxisPosition.BOTTOM
+                setDrawAxisLine(false)
+            }
         }
 
-
-//        val data = LineData(labels, dataset)
-        val data = LineData(dataset)
+        val data = BarData(dataset)
         dataset.setColors(*ColorTemplate.COLORFUL_COLORS) //
         dataset.valueTextColor = Color.RED
 
-
-        /*dataset.setDrawCubic(true); //선 둥글게 만들기
-        dataset.setDrawFilled(true); //그래프 밑부분 색칠*/
-        lineChart.data = data
-//        lineChart.animateY(5000)
+        viewDataBinding.barChart.data = data
     }
 
     override fun onProcess() {

@@ -14,49 +14,44 @@ import com.github.mikephil.charting.renderer.LineRadarRenderer
 import com.github.mikephil.charting.utils.*
 import java.lang.ref.WeakReference
 import java.util.HashMap
-import android.graphics.BitmapFactory
-
 import android.graphics.Bitmap
-import android.os.Build
+import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.dagger.mpandroidchart.R
 import com.orhanobut.logger.Logger
-import kotlin.coroutines.coroutineContext
 
-
-open class CustomLineChartRenderer(private var context: Context, private var mChart: LineDataProvider, animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
-    LineRadarRenderer(animator, viewPortHandler) {
-    /**
-     * paint for the inner circle of the value indicators
-     */
+/**
+ * <pre>
+  * com.dagger.mpandroidchart.ui.linechart.custom
+  * </pre>
+  *
+  * @author : 이수현
+  * @Date : 2021/12/21 2:27 오후
+  * @Version : 1.0.0
+  * @Description : Value Background 수정하기 위해 Superclass 작성
+  * @History :
+  *
+  **/
+open class CustomLineChartRenderer(private var context: Context, private var mChart: LineDataProvider, animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) : LineRadarRenderer(animator, viewPortHandler) {
     protected var mCirclePaintInner: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-
-    /**
-     * Bitmap object used for drawing the paths (otherwise they are too long if
-     * rendered directly on the canvas)
-     */
     private var mDrawBitmap: WeakReference<Bitmap?>? = null
-
-    /**
-     * on this canvas, the paths are rendered, it is initialized with the
-     * pathBitmap
-     */
     private var mBitmapCanvas: Canvas? = null
-
-    /**
-     * the bitmap configuration to be used
-     */
     private var mBitmapConfig = Bitmap.Config.ARGB_8888
     private var cubicPath = Path()
     private var cubicFillPath = Path()
+
+    init {
+        mCirclePaintInner.style = Paint.Style.FILL
+        mCirclePaintInner.color = Color.WHITE
+    }
+
     override fun initBuffers() {}
+
     override fun drawData(c: Canvas) {
         val width = mViewPortHandler.chartWidth.toInt()
         val height = mViewPortHandler.chartHeight.toInt()
         var drawBitmap = if (mDrawBitmap == null) null else mDrawBitmap!!.get()
-        if (drawBitmap == null || drawBitmap.width != width
-            || drawBitmap.height != height
-        ) {
+        if (drawBitmap == null || drawBitmap.width != width || drawBitmap.height != height) {
             if (width > 0 && height > 0) {
                 drawBitmap = Bitmap.createBitmap(width, height, mBitmapConfig)
                 mDrawBitmap = WeakReference(drawBitmap)
@@ -93,7 +88,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             var prev = dataSet.getEntryForIndex(mXBounds.min)
             var cur = prev
 
-            // let the spline start
             cubicPath.moveTo(cur.x, cur.y * phaseY)
             for (j in mXBounds.min + 1..mXBounds.range + mXBounds.min) {
                 prev = cur
@@ -106,12 +100,9 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
                 )
             }
         }
-
-        // if filled is enabled, close the path
         if (dataSet.isDrawFilledEnabled) {
             cubicFillPath.reset()
             cubicFillPath.addPath(cubicPath)
-            // create a new path, this is bad for performance
             drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds)
         }
         mRenderPaint.color = dataSet.color
@@ -132,11 +123,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             var prevDy = 0f
             var curDx = 0f
             var curDy = 0f
-
-            // Take an extra point from the left, and an extra from the right.
-            // That's because we need 4 points for a cubic bezier (cubic=4), otherwise we get lines moving and doing weird stuff on the edges of the chart.
-            // So in the starting `prev` and `cur`, go -2, -1
-            // And in the `lastIndex`, add +1
             val firstIndex = mXBounds.min + 1
             val lastIndex = mXBounds.min + mXBounds.range
             var prevPrev: Entry?
@@ -166,7 +152,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             }
         }
 
-        // if filled is enabled, close the path
         if (dataSet.isDrawFilledEnabled) {
             cubicFillPath.reset()
             cubicFillPath.addPath(cubicPath)
@@ -179,13 +164,7 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
         mRenderPaint.pathEffect = null
     }
 
-    private fun drawCubicFill(
-        c: Canvas?,
-        dataSet: ILineDataSet,
-        spline: Path,
-        trans: Transformer,
-        bounds: XBounds
-    ) {
+    private fun drawCubicFill(c: Canvas?, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
         val fillMin = dataSet.fillFormatter
             .getFillLinePosition(dataSet, mChart)
         spline.lineTo(dataSet.getEntryForIndex(bounds.min + bounds.range).x, fillMin)
@@ -201,13 +180,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
     }
 
     private var mLineBuffer = FloatArray(4)
-
-    /**
-     * Draws a normal line.
-     *
-     * @param c
-     * @param dataSet
-     */
     private fun drawLinear(c: Canvas?, dataSet: ILineDataSet) {
         val entryCount = dataSet.entryCount
         val isDrawSteppedEnabled = dataSet.mode == LineDataSet.Mode.STEPPED
@@ -217,7 +189,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
         mRenderPaint.style = Paint.Style.STROKE
         var canvas: Canvas? = null
 
-        // if the data-set is dashed, draw on bitmap-canvas
         canvas = if (dataSet.isDashedLineEnabled) {
             mBitmapCanvas
         } else {
@@ -225,12 +196,10 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
         }
         mXBounds[mChart] = dataSet
 
-        // if drawing filled is enabled
         if (dataSet.isDrawFilledEnabled && entryCount > 0) {
             drawLinearFill(c, dataSet, trans, mXBounds)
         }
 
-        // more than 1 color
         if (dataSet.colors.size > 1) {
             if (mLineBuffer.size <= pointsPerEntryPair * 2) mLineBuffer =
                 FloatArray(pointsPerEntryPair * 4)
@@ -259,27 +228,16 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
                 trans.pointValuesToPixel(mLineBuffer)
                 if (!mViewPortHandler.isInBoundsRight(mLineBuffer[0])) break
 
-                // make sure the lines don't do shitty things outside
-                // bounds
                 if (!mViewPortHandler.isInBoundsLeft(mLineBuffer[2])
                     || !mViewPortHandler.isInBoundsTop(mLineBuffer[1]) && !mViewPortHandler
                         .isInBoundsBottom(mLineBuffer[3])
                 ) continue
 
-                // get the color that is set for this line-segment
                 mRenderPaint.color = dataSet.getColor(j)
                 canvas!!.drawLines(mLineBuffer, 0, pointsPerEntryPair * 2, mRenderPaint)
             }
-        } else { // only one color per dataset
-            if (mLineBuffer.size < Math.max(
-                    entryCount * pointsPerEntryPair,
-                    pointsPerEntryPair
-                ) * 2
-            ) mLineBuffer = FloatArray(
-                Math.max(
-                    entryCount * pointsPerEntryPair, pointsPerEntryPair
-                ) * 4
-            )
+        } else {
+            if (mLineBuffer.size < (entryCount * pointsPerEntryPair).coerceAtLeast(pointsPerEntryPair) * 2) mLineBuffer = FloatArray((entryCount * pointsPerEntryPair).coerceAtLeast(pointsPerEntryPair) * 4)
             var e1: Entry?
             var e2: Entry?
             e1 = dataSet.getEntryForIndex(mXBounds.min)
@@ -312,22 +270,15 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
         mRenderPaint.pathEffect = null
     }
 
-    private var mGenerateFilledPathBuffer = Path()
-
     /**
-     * Draws a filled linear path on the canvas.
+     * @author : 이수현
+     * @Date : 2021/12/21 1:51 오후
+     * @Description :
+     * @History :
      *
-     * @param c
-     * @param dataSet
-     * @param trans
-     * @param bounds
-     */
-    private fun drawLinearFill(
-        c: Canvas?,
-        dataSet: ILineDataSet,
-        trans: Transformer,
-        bounds: XBounds
-    ) {
+     **/
+    private var mGenerateFilledPathBuffer = Path()
+    private fun drawLinearFill(c: Canvas?, dataSet: ILineDataSet, trans: Transformer, bounds: XBounds) {
         val filled = mGenerateFilledPathBuffer
         val startingIndex = bounds.min
         val endingIndex = bounds.range + bounds.min
@@ -336,7 +287,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
         var currentEndIndex = indexInterval
         var iterations = 0
 
-        // Doing this iteratively in order to avoid OutOfMemory errors that can happen on large bounds sets.
         do {
             currentStartIndex = startingIndex + iterations * indexInterval
             currentEndIndex = currentStartIndex + indexInterval
@@ -355,21 +305,7 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
         } while (currentStartIndex <= currentEndIndex)
     }
 
-    /**
-     * Generates a path that is used for filled drawing.
-     *
-     * @param dataSet    The dataset from which to read the entries.
-     * @param startIndex The index from which to start reading the dataset
-     * @param endIndex   The index from which to stop reading the dataset
-     * @param outputPath The path object that will be assigned the chart data.
-     * @return
-     */
-    private fun generateFilledPath(
-        dataSet: ILineDataSet,
-        startIndex: Int,
-        endIndex: Int,
-        outputPath: Path
-    ) {
+    private fun generateFilledPath(dataSet: ILineDataSet, startIndex: Int, endIndex: Int, outputPath: Path) {
         val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, mChart)
         val phaseY = mAnimator.phaseY
         val isDrawSteppedEnabled = dataSet.mode == LineDataSet.Mode.STEPPED
@@ -378,7 +314,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
         outputPath.moveTo(entry.x, fillMin)
         outputPath.lineTo(entry.x, entry.y * phaseY)
 
-        // create a new path
         var currentEntry: Entry? = null
         var previousEntry = entry
         for (x in startIndex + 1..endIndex) {
@@ -390,7 +325,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             previousEntry = currentEntry
         }
 
-        // close up
         if (currentEntry != null) {
             outputPath.lineTo(currentEntry.x, fillMin)
         }
@@ -404,11 +338,9 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
                 val dataSet = dataSets[i]
                 if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) continue
 
-                // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet)
                 val trans = mChart.getTransformer(dataSet.axisDependency)
 
-                // make sure the values do not interfear with the circles
                 var valOffset = (dataSet.circleRadius * 1.75f).toInt()
                 if (!dataSet.isDrawCirclesEnabled) valOffset /= 2
                 mXBounds[mChart] = dataSet
@@ -427,68 +359,93 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
                         continue
                     }
                     val entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min)
+                    
+                    /**
+                     * @author : 이수현
+                     * @Date : 2021/12/21 2:23 오후
+                     * @Description : DrawValue 분기 처리
+                     * @History : 
+                     *
+                     **/
                     if (dataSet.isDrawValuesEnabled) {
-//                        Logger.d("dataSet :: ${dataSet.entryCount}\nj :: $j\npositions :: $positions\npositions size :: ${positions.size}")
                         if(j == positions.size - 2) {
-                            drawValue2(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2))
+                            customDrawValues(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2))
                         }else {
                             drawValue(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2))
                         }
-
 //                        drawValue(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2))
                     }
+
                     if (entry.icon != null && dataSet.isDrawIconsEnabled) {
                         val icon = entry.icon
                         Utils.drawImage(c, icon, (x + iconsOffset.x).toInt(), (y + iconsOffset.y).toInt(), icon.intrinsicWidth, icon.intrinsicHeight)
                     }
                     j += 2
                 }
+
                 MPPointF.recycleInstance(iconsOffset)
             }
+
         }
     }
 
     /**
      * @author : 이수현
-     * @Date : 2021/12/16 4:24 오후
-     * @Description : 마지막 아이템 수정 메서드
+     * @Date : 2021/12/21 1:52 오후
+     * @Description : 커스텀 Value Background  ->  Value 자릿수에 따라 Left, Right Spread 
      * @History :
      *
      **/
-    private fun drawValue2(c: Canvas, valueText: String, x: Float, y: Float, color: Int) {
-        Utils.drawImage(c, ContextCompat.getDrawable(context, R.drawable.chart_point_item_background), x.toInt(), y.toInt() - 45, 55, 30)
+    private val mDrawableBoundsCache = Rect()
+    private fun customDrawImage(canvas: Canvas, drawable: Drawable, x: Int, y: Int, width: Int, height: Int, textLength: Int) {
+        val drawOffset = MPPointF.getInstance()
+        drawOffset.x =(x -(width / 2)).toFloat()
+        drawOffset.y =(y -(height / 2)).toFloat()
+        drawable.copyBounds(mDrawableBoundsCache)
+        when(textLength) {
+            1       -> drawable.setBounds(mDrawableBoundsCache.left, mDrawableBoundsCache.top, mDrawableBoundsCache.left + width, mDrawableBoundsCache.top + width) 
+            2       -> drawable.setBounds(mDrawableBoundsCache.left - 10, mDrawableBoundsCache.top, mDrawableBoundsCache.left + width + 10, mDrawableBoundsCache.top + width)
+            3       -> drawable.setBounds(mDrawableBoundsCache.left - 13, mDrawableBoundsCache.top, mDrawableBoundsCache.left + width + 13, mDrawableBoundsCache.top + width)
+            else    -> drawable.setBounds(mDrawableBoundsCache.left, mDrawableBoundsCache.top, mDrawableBoundsCache.left + width, mDrawableBoundsCache.top + width)
+        }
+        
+        val saveId = canvas.save()
+        canvas.translate(drawOffset.x, drawOffset.y)
+        drawable.draw(canvas)
+        canvas.restoreToCount(saveId)
+    }
+
+    /**
+     * @author : 이수현
+     * @Date : 2021/12/16 4:24 오후
+     * @Description : 마지막 아이템 수정 메서드(추가)
+     * @History :
+     *
+     **/
+    private fun customDrawValues(c: Canvas, valueText: String, x: Float, y: Float, color: Int) {
+        ContextCompat.getDrawable(context, R.drawable.chart_point_item_background)?.let { customDrawImage(c, it, x.toInt(), y.toInt() - 40, 55, 30, valueText.length) }
         mValuePaint.color = color
         c.drawText(valueText, x, y - 20, mValuePaint)
     }
 
-
+    /**
+     * @author : 이수현
+     * @Date : 2021/12/21 1:52 오후
+     * @Description : 수정
+     * @History :
+     *
+     **/
     override fun drawValue(c: Canvas, valueText: String, x: Float, y: Float, color: Int) {
-
-        /**
-         * @author : 이수현
-         * @Date : 2021/12/16 1:57 오후
-         * @Description : 수정
-         * @History :
-         *
-         **/
-//        Logger.d("valueText :: $valueText\nx :: $x\ny :: $y\ncolor :: $color")
-        Utils.drawImage(c, ContextCompat.getDrawable(context, R.drawable.chart_item_background), x.toInt(), y.toInt() - 40, 55, 30)
+        ContextCompat.getDrawable(context, R.drawable.chart_item_background)?.let { customDrawImage(c, it, x.toInt(), y.toInt() - 40, 55, 30, valueText.length) }
         mValuePaint.color = color
         c.drawText(valueText, x, y - 20, mValuePaint)
     }
-
+    
     override fun drawExtras(c: Canvas) {
         drawCircles(c)
     }
-
-    /**
-     * cache for the circle bitmaps of all datasets
-     */
+    
     private val mImageCaches = HashMap<IDataSet<*>, DataSetImageCache>()
-
-    /**
-     * buffer for drawing the circles
-     */
     private val mCirclesBuffer = FloatArray(2)
     private fun drawCircles(c: Canvas) {
         mRenderPaint.style = Paint.Style.FILL
@@ -515,10 +472,7 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             }
             val changeRequired = imageCache!!.init(dataSet)
 
-            // only fill the cache with new bitmaps if a change is required
-            if (changeRequired) {
-                imageCache.fill(dataSet, drawCircleHole, drawTransparentCircleHole)
-            }
+            if (changeRequired) { imageCache.fill(dataSet, drawCircleHole, drawTransparentCircleHole) }
             val boundsRangeCount = mXBounds.range + mXBounds.min
             for (j in mXBounds.min..boundsRangeCount) {
                 val e = dataSet.getEntryForIndex(j) ?: break
@@ -538,7 +492,7 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             }
         }
     }
-
+    
     override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
         val lineData = mChart.lineData
         for (high in indices) {
@@ -546,28 +500,13 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             if (set == null || !set.isHighlightEnabled) continue
             val e = set.getEntryForXValue(high.x, high.y)
             if (!isInBoundsX(e, set)) continue
-            val pix = mChart.getTransformer(set.axisDependency).getPixelForValues(
-                e.x, e.y * mAnimator
-                    .phaseY
-            )
+            val pix = mChart.getTransformer(set.axisDependency).getPixelForValues(e.x, e.y * mAnimator.phaseY)
             high.setDraw(pix.x.toFloat(), pix.y.toFloat())
 
-            // draw the lines
             drawHighlightLines(c, pix.x.toFloat(), pix.y.toFloat(), set)
         }
     }
-    /**
-     * Returns the Bitmap.Config that is used by this renderer.
-     *
-     * @return
-     */
-    /**
-     * Sets the Bitmap.Config to be used by this renderer.
-     * Default: Bitmap.Config.ARGB_8888
-     * Use Bitmap.Config.ARGB_4444 to consume less memory.
-     *
-     * @param config
-     */
+
     var bitmapConfig: Bitmap.Config
         get() = mBitmapConfig
         set(config) {
@@ -575,9 +514,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             releaseBitmap()
         }
 
-    /**
-     * Releases the drawing bitmap. This should be called when [LineChart.onDetachedFromWindow].
-     */
     fun releaseBitmap() {
         if (mBitmapCanvas != null) {
             mBitmapCanvas!!.setBitmap(null)
@@ -595,12 +531,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
         private val mCirclePathBuffer = Path()
         private var circleBitmaps: Array<Bitmap?>? = null
 
-        /**
-         * Sets up the cache, returns true if a change of cache was required.
-         *
-         * @param set
-         * @return
-         */
         fun init(set: ILineDataSet): Boolean {
             val size = set.circleColorCount
             var changeRequired = false
@@ -614,13 +544,6 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             return changeRequired
         }
 
-        /**
-         * Fills the cache with bitmaps for the given dataset.
-         *
-         * @param set
-         * @param drawCircleHole
-         * @param drawTransparentCircleHole
-         */
         fun fill(set: ILineDataSet, drawCircleHole: Boolean, drawTransparentCircleHole: Boolean) {
             val colorCount = set.circleColorCount
             val circleRadius = set.circleRadius
@@ -633,19 +556,9 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
                 circleBitmaps!![i] = circleBitmap
                 mRenderPaint.color = set.getCircleColor(i)
                 if (drawTransparentCircleHole) {
-                    // Begin path for circle with hole
                     mCirclePathBuffer.reset()
                     mCirclePathBuffer.addCircle(circleRadius, circleRadius, circleRadius, Path.Direction.CW)
-
-                    // Cut hole in path
-                    mCirclePathBuffer.addCircle(
-                        circleRadius,
-                        circleRadius,
-                        circleHoleRadius,
-                        Path.Direction.CCW
-                    )
-
-                    // Fill in-between
+                    mCirclePathBuffer.addCircle(circleRadius, circleRadius, circleHoleRadius, Path.Direction.CCW)
                     canvas.drawPath(mCirclePathBuffer, mRenderPaint)
                 } else {
                     canvas.drawCircle(circleRadius, circleRadius, circleRadius, mRenderPaint)
@@ -656,19 +569,8 @@ open class CustomLineChartRenderer(private var context: Context, private var mCh
             }
         }
 
-        /**
-         * Returns the cached Bitmap at the given index.
-         *
-         * @param index
-         * @return
-         */
         fun getBitmap(index: Int): Bitmap? {
             return circleBitmaps!![index % circleBitmaps!!.size]
         }
-    }
-
-    init {
-        mCirclePaintInner.style = Paint.Style.FILL
-        mCirclePaintInner.color = Color.WHITE
     }
 }

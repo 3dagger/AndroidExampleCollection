@@ -2,6 +2,7 @@ package com.dagger.mpandroidchart
 
 import android.app.Application
 import com.dagger.mpandroidchart.di.apiModules
+import com.dagger.mpandroidchart.di.appModules
 import com.dagger.mpandroidchart.di.networkModules
 import com.dagger.mpandroidchart.di.viewModelModules
 import com.orhanobut.logger.AndroidLogAdapter
@@ -17,7 +18,7 @@ class GlobalApplication : Application() {
 
         startKoin {
             androidContext(this@GlobalApplication)
-            modules(listOf(apiModules, networkModules, viewModelModules))
+            modules(listOf(apiModules, networkModules, viewModelModules, appModules))
         }
 
         // init Logger

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">MPAndroidChart Examples</string>
+    <string name="linechart_sample">LineChart Sample</string>
+    <string name="str_station_use_report">스테이션 사용 리포트</string>
+    <string name="str_daily">일별</string>
+    <string name="str_monthly">월별</string>
+    <string name="str_battery_change_count">배터리 교환 횟수</string>
+    <string name="str_count">회</string>
+    <string name="str_battery_useage">배터리 사용량</string>
+    <string name="str_count_soc">SOC</string>
+    <string name="str_barchart_sample">BarChart Sample</string>
 </resources>

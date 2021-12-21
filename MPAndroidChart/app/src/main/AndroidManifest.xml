@@ -14,10 +14,10 @@
         android:theme="@style/Theme.MPAndroidChart">
 
         <activity android:name=".ui.barchart.BarChartActivity"/>
-        <activity android:name=".ui.main.MainActivity"/>
+        <activity android:name=".ui.linechart.LineChartActivity"/>
 
         <activity
-            android:name=".ui.linechart.LineChartActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
