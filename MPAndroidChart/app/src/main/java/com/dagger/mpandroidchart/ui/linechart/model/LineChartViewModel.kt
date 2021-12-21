@@ -33,8 +33,8 @@ class LineChartViewModel(private val remoteService: RemoteService) : BaseViewMod
     var isTestBooleanData = MutableLiveData<Boolean>()
 
     init {
-        onLoadPersonalBikeReport(period = "day")
-//        onLoadMockReport(period = "day")
+//        onLoadPersonalBikeReport(period = "day")
+        onLoadMockReport(period = "day")
         isTestBooleanData.value = true
     }
 

@@ -69,8 +69,8 @@ class LineChartActivity : BaseActivity<ActivityLinechartBinding, LineChartViewMo
                 true -> {
                     viewDataBinding.backgroundView.animate().withEndAction {
                         showProgress()
-                        viewModel.onLoadPersonalBikeReport(period = "day")
-//                        viewModel.onLoadMockReport(period = "day")
+//                        viewModel.onLoadPersonalBikeReport(period = "day")
+                        viewModel.onLoadMockReport(period = "day")
                     }.setDuration(200).translationX(0F).start()
                     viewDataBinding.viewTv2.setTextColor(Color.parseColor("#4b4b4b"))
                     viewDataBinding.viewTv2.typeface = ResourcesCompat.getFont(this@LineChartActivity, R.font.notosanskrbold)
@@ -80,8 +80,8 @@ class LineChartActivity : BaseActivity<ActivityLinechartBinding, LineChartViewMo
                 false -> {
                     viewDataBinding.backgroundView.animate().withEndAction {
                         showProgress()
-                        viewModel.onLoadPersonalBikeReport(period = "month")
-//                        viewModel.onLoadMockReport(period = "month")
+//                        viewModel.onLoadPersonalBikeReport(period = "month")
+                        viewModel.onLoadMockReport(period = "month")
                     }.setDuration(200).translationX(viewDataBinding.guideline1.x).start()
                     viewDataBinding.viewTv2.setTextColor(Color.parseColor("#909090"))
                     viewDataBinding.viewTv2.typeface = ResourcesCompat.getFont(this@LineChartActivity, R.font.notosanskrmedium)
