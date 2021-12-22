@@ -1,0 +1,3 @@
+package com.dagger.daggerhiltnetworkconnection.repository.remote
+
+interface Repository
