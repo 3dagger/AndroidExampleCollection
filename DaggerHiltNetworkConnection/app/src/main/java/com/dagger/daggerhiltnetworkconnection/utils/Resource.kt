@@ -1,5 +1,7 @@
 package com.dagger.daggerhiltnetworkconnection.utils
 
+import com.orhanobut.logger.Logger
+
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
 
     enum class Status {

@@ -10,4 +10,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "DaggerHiltNetworkConnection"
+//include(":app")
 include ':app'
+//include ':buildsrc'

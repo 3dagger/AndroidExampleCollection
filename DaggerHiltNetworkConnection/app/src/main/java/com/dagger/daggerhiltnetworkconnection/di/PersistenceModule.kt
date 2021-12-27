@@ -1,5 +1,6 @@
 package com.dagger.daggerhiltnetworkconnection.di
 
+import com.dagger.daggerhiltnetworkconnection.persistence.TypeResponseConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -18,5 +19,11 @@ object PersistenceModule {
         return Moshi.Builder()
             .addLast(KotlinJsonAdapterFactory())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTypeResponseConverter(moshi: Moshi): TypeResponseConverter {
+        return TypeResponseConverter(moshi)
     }
 }

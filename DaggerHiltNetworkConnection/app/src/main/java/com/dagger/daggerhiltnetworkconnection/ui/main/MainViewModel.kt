@@ -1,18 +1,30 @@
 package com.dagger.daggerhiltnetworkconnection.ui.main
 
-import androidx.databinding.Bindable
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.dagger.daggerhiltnetworkconnection.data.remote.MainRepository
-import com.dagger.daggerhiltnetworkconnection.data.remote.TermsList
-import com.dagger.daggerhiltnetworkconnection.repository.remote.RemoteService
-import com.skydoves.bindables.BindingViewModel
-import com.skydoves.bindables.bindingProperty
+import androidx.lifecycle.*
+import com.dagger.daggerhiltnetworkconnection.base.BaseViewModel
+import com.dagger.daggerhiltnetworkconnection.domain.model.TermsList
+import com.dagger.daggerhiltnetworkconnection.domain.repository.MainRepository
+import com.dagger.daggerhiltnetworkconnection.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
+class MainViewModel @Inject constructor(private val repository: MainRepository) : BaseViewModel() {
+    private val _termsList: MutableLiveData<Resource<List<TermsList>>> = MutableLiveData()
+    val termsList: MutableLiveData<Resource<List<TermsList>>>
+        get() = _termsList
 
-    }
+//    var isLoading = MutableLiveData<Boolean>()
+//    fun getTermsList() {
+//        viewModelScope.launch {
+//            repository.getTerms()
+//                .onEach { value ->
+//                    _termsList.value = value
+//                }
+//                .launchIn(viewModelScope)
+//        }
+//    }
+
+
+
+}

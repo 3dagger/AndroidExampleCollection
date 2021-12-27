@@ -1,12 +1,14 @@
 package com.dagger.daggerhiltnetworkconnection
 
 import android.app.Application
+import androidx.lifecycle.Observer
 import com.dagger.daggerhiltnetworkconnection.Constants.Companion.TAG_NAME
+import com.dagger.daggerhiltnetworkconnection.utils.NetworkConnection
 import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.BuildConfig
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
 class GlobalApplication : Application() {

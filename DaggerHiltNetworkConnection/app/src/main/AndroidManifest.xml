@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dagger.daggerhiltnetworkconnection">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DaggerHiltNetworkConnection">
-
+        
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:launchMode="singleTop"/>
         <activity
             android:name="com.dagger.daggerhiltnetworkconnection.ui.main.MainActivity"
             android:exported="true"

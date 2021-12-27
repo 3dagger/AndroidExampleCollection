@@ -1,43 +1,44 @@
 package com.dagger.daggerhiltnetworkconnection.ui.main
 
 import android.os.Bundle
-import android.view.Window
 import androidx.activity.viewModels
-import androidx.annotation.VisibleForTesting
-import androidx.appcompat.app.AppCompatActivity
+import com.dagger.daggerhiltnetworkconnection.Constants.Companion.INTENT_ARGUMENT_USER_ID
 import com.dagger.daggerhiltnetworkconnection.R
+import com.dagger.daggerhiltnetworkconnection.base.BaseActivity
 import com.dagger.daggerhiltnetworkconnection.databinding.ActivityMainBinding
-import com.google.android.material.transition.MaterialContainerTransformSharedElementCallback
-import com.skydoves.bindables.BindingActivity
+import com.dagger.daggerhiltnetworkconnection.extensions.openActivity
+import com.dagger.daggerhiltnetworkconnection.ui.detail.DetailActivity
+import com.dagger.daggerhiltnetworkconnection.utils.Resource.Status.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val viewModel: MainViewModel by viewModels()
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun initView(savedInstanceState: Bundle?) {
+        binding {
+            activity = this@MainActivity
+            vm = viewModel
+        }
+
+        subscribeObservers()
+    }
+
+    override fun onProcess() {
+//        binding.btnFindUser.setOnClickListener {
+//            viewModel.getUserInfo(userId = binding.edtInputUserId.text.toString())
+//        }
+    }
+
+    fun moveDetail() {
+        openActivity(DetailActivity::class.java) {
+            putString(INTENT_ARGUMENT_USER_ID, binding.edtInputUserId.text.toString())
+        }
+    }
+
+    private fun subscribeObservers() {
 
     }
+
 }
-//@AndroidEntryPoint
-//class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
-//
-//    @get:VisibleForTesting
-//    internal val viewModel: MainViewModel by viewModels()
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-//        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-//        window.sharedElementsUseOverlay = false
-//        super.onCreate(savedInstanceState)
-////        setContentView(R.layout.activity_main)
-//        binding {
-//
-//        }
-//    }
-//}

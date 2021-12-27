@@ -1,4 +1,4 @@
-package com.dagger.daggerhiltnetworkconnection.data.remote
+package com.dagger.daggerhiltnetworkconnection.domain.model
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
-@Entity
+//@Entity
 @JsonClass(generateAdapter = true)
 data class TermsList(
     @field:Json(name = "termsId") @PrimaryKey val termsId: String,

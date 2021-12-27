@@ -1,13 +1,18 @@
 package com.dagger.daggerhiltnetworkconnection.di
 
-import com.dagger.daggerhiltnetworkconnection.Constants.Companion.BASE_URL
-import com.dagger.daggerhiltnetworkconnection.data.remote.MainRepository
-import com.dagger.daggerhiltnetworkconnection.repository.remote.RemoteClient
-import com.dagger.daggerhiltnetworkconnection.repository.remote.RemoteService
+import android.content.Context
+import android.net.ConnectivityManager
+import androidx.databinding.ktx.BuildConfig
+import androidx.lifecycle.LiveData
+import com.dagger.daggerhiltnetworkconnection.ApiData.Companion.BASE_URL
+import com.dagger.daggerhiltnetworkconnection.domain.repository.MainRepository
+import com.dagger.daggerhiltnetworkconnection.data.remote.RemoteService
+import com.dagger.daggerhiltnetworkconnection.utils.NetworkConnection
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,13 +29,13 @@ object NetworkModule {
     fun provideOkHttpClient() : OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
-//                if(BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BODY
+                if(BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BODY
             })
             .build()
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
@@ -40,16 +45,21 @@ object NetworkModule {
             .build()
     }
 
-    @Singleton
     @Provides
+    @Singleton
+    fun provideIsNetworkAvailable(@ApplicationContext context: Context) : NetworkConnection {
+        return NetworkConnection(context)
+    }
+
+    @Provides
+    @Singleton
     fun provideRemoteService(retrofit: Retrofit): RemoteService {
         return retrofit.create(RemoteService::class.java)
     }
 
-    @Singleton
     @Provides
-    fun provideRemoteClient(remoteService: RemoteService): RemoteClient {
-        return RemoteClient(remoteService)
+    @Singleton
+    fun provideMainRepository(remoteService: RemoteService): MainRepository {
+        return MainRepository(remoteService)
     }
-
 }
