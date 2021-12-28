@@ -1,4 +1,4 @@
-package com.dagger.daggerhiltnetworkconnection.ui.main
+package com.dagger.daggerhiltnetworkconnection.presentation.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -7,7 +7,7 @@ import com.dagger.daggerhiltnetworkconnection.R
 import com.dagger.daggerhiltnetworkconnection.base.BaseActivity
 import com.dagger.daggerhiltnetworkconnection.databinding.ActivityMainBinding
 import com.dagger.daggerhiltnetworkconnection.extensions.openActivity
-import com.dagger.daggerhiltnetworkconnection.ui.detail.DetailActivity
+import com.dagger.daggerhiltnetworkconnection.presentation.detail.DetailActivity
 import com.dagger.daggerhiltnetworkconnection.utils.Resource.Status.*
 import dagger.hilt.android.AndroidEntryPoint
 

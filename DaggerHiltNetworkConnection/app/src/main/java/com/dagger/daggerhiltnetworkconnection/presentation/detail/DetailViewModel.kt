@@ -1,9 +1,11 @@
-package com.dagger.daggerhiltnetworkconnection.ui.detail
+package com.dagger.daggerhiltnetworkconnection.presentation.detail
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dagger.daggerhiltnetworkconnection.base.BaseViewModel
 import com.dagger.daggerhiltnetworkconnection.domain.model.UserInfo
+import com.dagger.daggerhiltnetworkconnection.domain.model.UserRepo
 import com.dagger.daggerhiltnetworkconnection.domain.usecase.MainUseCase
 import com.dagger.daggerhiltnetworkconnection.utils.Resource
 import com.orhanobut.logger.Logger
@@ -14,7 +16,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-//class DetailViewModel @Inject constructor(private val repository: MainRepository) : BaseViewModel() {
 class DetailViewModel @Inject constructor(private val mainUseCase: MainUseCase) : BaseViewModel() {
     private val _userInfo: MutableLiveData<Resource<UserInfo>> = MutableLiveData()
     val userInfo: MutableLiveData<Resource<UserInfo>>
@@ -32,4 +33,19 @@ class DetailViewModel @Inject constructor(private val mainUseCase: MainUseCase) 
                 .launchIn(viewModelScope)
         }
     }
+
+    private val _userRepositories = MutableLiveData<Resource<List<UserRepo>>>()
+    val userRepositories: LiveData<Resource<List<UserRepo>>>
+        get() = _userRepositories
+
+    fun getUserRepositories(owner: String?) {
+        viewModelScope.launch {
+            mainUseCase.getUserRepo(owner = owner)
+                .onEach {
+                    _userRepositories.value = it
+                }
+                .launchIn(viewModelScope)
+        }
+    }
+
 }

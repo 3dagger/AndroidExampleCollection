@@ -1,4 +1,4 @@
-package com.dagger.daggerhiltnetworkconnection.ui.main
+package com.dagger.daggerhiltnetworkconnection.presentation.main
 
 import androidx.lifecycle.*
 import com.dagger.daggerhiltnetworkconnection.base.BaseViewModel

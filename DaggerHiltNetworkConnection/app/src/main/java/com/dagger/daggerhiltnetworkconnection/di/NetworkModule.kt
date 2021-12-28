@@ -2,9 +2,9 @@ package com.dagger.daggerhiltnetworkconnection.di
 
 import android.content.Context
 import android.net.ConnectivityManager
-import androidx.databinding.ktx.BuildConfig
 import androidx.lifecycle.LiveData
 import com.dagger.daggerhiltnetworkconnection.ApiData.Companion.BASE_URL
+import com.dagger.daggerhiltnetworkconnection.BuildConfig
 import com.dagger.daggerhiltnetworkconnection.domain.repository.MainRepository
 import com.dagger.daggerhiltnetworkconnection.data.remote.RemoteService
 import com.dagger.daggerhiltnetworkconnection.utils.NetworkConnection

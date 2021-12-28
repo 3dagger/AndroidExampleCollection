@@ -1,4 +1,4 @@
-package com.dagger.daggerhiltnetworkconnection.ui.detail
+package com.dagger.daggerhiltnetworkconnection.presentation.detail
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -28,7 +28,12 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(R.layout.activity_det
     }
 
     override fun onProcess() {
-        viewModel.getUserInfo(userId = argumentUserId)
+        viewModel.getUserRepositories(owner = argumentUserId)
+        viewModel.userRepositories.observe(this@DetailActivity, Observer {
+            Logger.d("res :: $it")
+        })
+
+//        viewModel.getUserInfo(userId = argumentUserId)
 
 //        viewModel.userInfo.observe(this@DetailActivity, Observer {
 //            binding.webView.loadUrl(it.data?.htmlUrl.toString())

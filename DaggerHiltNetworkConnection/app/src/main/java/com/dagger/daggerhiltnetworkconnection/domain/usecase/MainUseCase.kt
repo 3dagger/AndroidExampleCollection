@@ -1,6 +1,7 @@
 package com.dagger.daggerhiltnetworkconnection.domain.usecase
 
 import com.dagger.daggerhiltnetworkconnection.domain.model.UserInfo
+import com.dagger.daggerhiltnetworkconnection.domain.model.UserRepo
 import com.dagger.daggerhiltnetworkconnection.domain.repository.MainRepository
 import com.dagger.daggerhiltnetworkconnection.utils.Resource
 import com.orhanobut.logger.Logger
@@ -41,7 +42,7 @@ class MainUseCase @Inject constructor(private val mainRepository: MainRepository
     /**
      * @author : 이수현
      * @Date : 2021/12/27 7:03 오후
-     * @Description : 3
+     * @Description : 깃헙 유저정보 호출
      * @History :
      *
      **/
@@ -55,5 +56,22 @@ class MainUseCase @Inject constructor(private val mainRepository: MainRepository
             Logger.d("error :: ${e.message}")
         }
     }.onStart { onStart() }.onCompletion { onComplete() }.flowOn(ioDispatcher)
+
+    /**
+     * @author : 이수현
+     * @Date : 2021/12/29 3:02 오전
+     * @Description : 깃헙 유저 레포지토리 호출
+     * @History :
+     *
+     **/
+    suspend fun getUserRepo(owner: String?): Flow<Resource<List<UserRepo>>> = flow {
+      emit(Resource.loading())
+      try{
+          val response = mainRepository.getUserRepos(owner = owner)
+          emit(Resource.success(response.body()!!))
+      }catch (e: Exception) {
+          Logger.d("error :: ${e.message}")
+      }
+    }.flowOn(ioDispatcher)
 
 }

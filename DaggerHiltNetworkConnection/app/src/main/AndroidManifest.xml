@@ -16,10 +16,10 @@
         android:theme="@style/Theme.DaggerHiltNetworkConnection">
         
         <activity
-            android:name=".ui.detail.DetailActivity"
+            android:name=".presentation.detail.DetailActivity"
             android:launchMode="singleTop"/>
         <activity
-            android:name="com.dagger.daggerhiltnetworkconnection.ui.main.MainActivity"
+            android:name="com.dagger.daggerhiltnetworkconnection.presentation.main.MainActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
