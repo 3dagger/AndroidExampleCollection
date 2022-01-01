@@ -1,20 +1,26 @@
 package com.dagger.daggerhiltnetworkconnection.presentation.main
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.InputFilter
 import androidx.activity.viewModels
-import com.dagger.daggerhiltnetworkconnection.Constants.Companion.INTENT_ARGUMENT_USER_ID
 import com.dagger.daggerhiltnetworkconnection.R
 import com.dagger.daggerhiltnetworkconnection.base.BaseActivity
 import com.dagger.daggerhiltnetworkconnection.databinding.ActivityMainBinding
-import com.dagger.daggerhiltnetworkconnection.extensions.openActivity
-import com.dagger.daggerhiltnetworkconnection.presentation.detail.DetailActivity
+import com.dagger.daggerhiltnetworkconnection.extensions.textChange
 import com.dagger.daggerhiltnetworkconnection.utils.Resource.Status.*
+import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val viewModel: MainViewModel by viewModels()
-
 
     override fun initView(savedInstanceState: Bundle?) {
         binding {
@@ -22,23 +28,47 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             vm = viewModel
         }
 
-        subscribeObservers()
+
     }
 
     override fun onProcess() {
-//        binding.btnFindUser.setOnClickListener {
-//            viewModel.getUserInfo(userId = binding.edtInputUserId.text.toString())
+        initViewSetup()
+        subscribeObservers()
+    }
+
+    private fun initViewSetup() {
+//        customProgress = CustomProgress(context = this@MainActivity)
+
+        GlobalScope.launch {
+            binding.edtSearchText.apply {
+                textChange()
+                    .debounce(500)
+                    .filter {  it?.length!! > 0 }
+                    .onEach {
+                        Logger.d("flow로 받는다 $it")
+//                        customProgress.show()
+//                        viewModel.getUserInfo(userId = it.toString())
+                        viewModel.searchUserInfoResult(owner = it.toString())
+                    }
+                    .launchIn(this@launch)
+            }
+        }
+
+
+
+
+//        binding.edtSearchText.apply {
+//            this.filters = arrayOf(InputFilter.LengthFilter(30))
+////            this.setTextColor(Color.WHITE)
+////            this.setHintTextColor(Color.WHITE)
 //        }
     }
 
-    fun moveDetail() {
-        openActivity(DetailActivity::class.java) {
-            putString(INTENT_ARGUMENT_USER_ID, binding.edtInputUserId.text.toString())
+    private fun subscribeObservers() {
+        viewModel.isLoading.observe(this) {
+            Logger.d("isLoading :: $it")
         }
     }
 
-    private fun subscribeObservers() {
-
-    }
 
 }

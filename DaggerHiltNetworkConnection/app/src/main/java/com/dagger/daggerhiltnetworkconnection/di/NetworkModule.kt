@@ -5,8 +5,10 @@ import android.net.ConnectivityManager
 import androidx.lifecycle.LiveData
 import com.dagger.daggerhiltnetworkconnection.ApiData.Companion.BASE_URL
 import com.dagger.daggerhiltnetworkconnection.BuildConfig
+import com.dagger.daggerhiltnetworkconnection.data.remote.MainRepositoryImpl
 import com.dagger.daggerhiltnetworkconnection.domain.repository.MainRepository
 import com.dagger.daggerhiltnetworkconnection.data.remote.RemoteService
+import com.dagger.daggerhiltnetworkconnection.network.retrofit.factory.ResponseAdapterFactory
 import com.dagger.daggerhiltnetworkconnection.utils.NetworkConnection
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import dagger.Module
@@ -41,7 +43,8 @@ object NetworkModule {
             .client(okHttpClient)
             .baseUrl(BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
-            .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
+//            .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
+            .addCallAdapterFactory(ResponseAdapterFactory())
             .build()
     }
 
@@ -57,9 +60,14 @@ object NetworkModule {
         return retrofit.create(RemoteService::class.java)
     }
 
+//    @Provides
+//    @Singleton
+//    fun provideMainRepository(remoteService: RemoteService): MainRepository {
+//        return MainRepository(remoteService)
+//    }
     @Provides
     @Singleton
     fun provideMainRepository(remoteService: RemoteService): MainRepository {
-        return MainRepository(remoteService)
+        return MainRepositoryImpl(remoteService)
     }
 }

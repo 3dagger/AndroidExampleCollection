@@ -1,8 +1,7 @@
-package com.dagger.daggerhiltnetworkconnection.presentation.detail
+package com.dagger.daggerhiltnetworkconnection.presentation.user.info
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import com.dagger.daggerhiltnetworkconnection.Constants.Companion.INTENT_ARGUMENT_USER_ID
 import com.dagger.daggerhiltnetworkconnection.R
 import com.dagger.daggerhiltnetworkconnection.base.BaseActivity
@@ -11,14 +10,14 @@ import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetailActivity : BaseActivity<ActivityDetailBinding>(R.layout.activity_detail) {
-    private val viewModel: DetailViewModel by viewModels()
+class UserInfoActivity : BaseActivity<ActivityDetailBinding>(R.layout.activity_detail) {
+    private val viewModel: UserInfoViewModel by viewModels()
 
     private var argumentUserId: String? = null
 
     override fun initView(savedInstanceState: Bundle?) {
         binding {
-            activity = this@DetailActivity
+            activity = this@UserInfoActivity
             vm = viewModel
         }
 
@@ -28,10 +27,10 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(R.layout.activity_det
     }
 
     override fun onProcess() {
-        viewModel.getUserRepositories(owner = argumentUserId)
-        viewModel.userRepositories.observe(this@DetailActivity, Observer {
-            Logger.d("res :: $it")
-        })
+//        viewModel.getUserRepositories(owner = argumentUserId)
+//        viewModel.userRepositories.observe(this@DetailActivity, Observer {
+//            Logger.d("res :: $it")
+//        })
 
 //        viewModel.getUserInfo(userId = argumentUserId)
 

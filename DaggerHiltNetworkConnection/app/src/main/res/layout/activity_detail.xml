@@ -7,10 +7,10 @@
         <import type="android.view.View"/>
         <variable
             name="activity"
-            type="com.dagger.daggerhiltnetworkconnection.presentation.detail.DetailActivity" />
+            type="com.dagger.daggerhiltnetworkconnection.presentation.user.info.UserInfoActivity" />
         <variable
             name="vm"
-            type="com.dagger.daggerhiltnetworkconnection.presentation.detail.DetailViewModel" />
+            type="com.dagger.daggerhiltnetworkconnection.presentation.user.info.UserInfoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,15 +30,23 @@
             app:layout_constraintRight_toRightOf="parent"
             />
 
-
-        <WebView
-            android:id="@+id/webView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/repoRv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:loadUrl="@{vm.userInfo.data.htmlUrl}"
-            app:layout_constraintTop_toBottomOf="@+id/txtUserName"
+            app:layout_constraintTop_toBottomOf="@id/txtUserName"
             app:layout_constraintBottom_toBottomOf="parent"
             />
+
+
+<!--        <WebView-->
+<!--            android:id="@+id/webView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            app:loadUrl="@{vm.userInfo.data.htmlUrl}"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/txtUserName"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            />-->
 
         <ProgressBar
             android:layout_width="wrap_content"

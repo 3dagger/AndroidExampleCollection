@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="repo"
+            type="com.dagger.daggerhiltnetworkconnection.domain.model.UserRepo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/repo_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@{repo.name}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Clean Architecture"/>
+
+        <TextView
+            android:id="@+id/repo_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{repo.url}"
+            app:layout_constraintTop_toBottomOf="@id/repo_name"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="https://github.com/tkdgusl94/blog-source"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -16,7 +16,7 @@
         android:theme="@style/Theme.DaggerHiltNetworkConnection">
         
         <activity
-            android:name=".presentation.detail.DetailActivity"
+            android:name=".presentation.user.info.UserInfoActivity"
             android:launchMode="singleTop"/>
         <activity
             android:name="com.dagger.daggerhiltnetworkconnection.presentation.main.MainActivity"
