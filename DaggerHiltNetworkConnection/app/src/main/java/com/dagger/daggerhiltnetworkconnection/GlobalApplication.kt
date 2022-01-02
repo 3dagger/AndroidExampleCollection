@@ -2,7 +2,7 @@ package com.dagger.daggerhiltnetworkconnection
 
 import android.app.Application
 import androidx.lifecycle.Observer
-import com.dagger.daggerhiltnetworkconnection.Constants.Companion.TAG_NAME
+import com.dagger.daggerhiltnetworkconnection.Constants.TAG_NAME
 import com.dagger.daggerhiltnetworkconnection.utils.NetworkConnection
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger

@@ -7,10 +7,10 @@
         <import type="android.view.View"/>
         <variable
             name="activity"
-            type="com.dagger.daggerhiltnetworkconnection.presentation.user.info.UserInfoActivity" />
+            type="com.dagger.daggerhiltnetworkconnection.presentation.ui.user.info.UserInfoActivity" />
         <variable
             name="vm"
-            type="com.dagger.daggerhiltnetworkconnection.presentation.user.info.UserInfoViewModel" />
+            type="com.dagger.daggerhiltnetworkconnection.presentation.ui.user.info.UserInfoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
