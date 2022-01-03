@@ -12,8 +12,6 @@ class MainUseCase @Inject constructor(private val mainRepository: MainRepository
      * @History :
      *
      **/
-//    fun execute(owner: String?) = mainRepository.getUserInfo(owner)
-
     fun execute(owner: String?) = mainRepository.getUserInfo(owner)
 
 

@@ -1,6 +1,7 @@
 package com.dagger.daggerhiltnetworkconnection.presentation.ui.main
 
 import androidx.lifecycle.*
+import com.dagger.daggerhiltnetworkconnection.data.network.status.ApiResponse
 import com.dagger.daggerhiltnetworkconnection.presentation.base.BaseViewModel
 import com.dagger.daggerhiltnetworkconnection.domain.main.entity.MainUserInfoEntity
 import com.dagger.daggerhiltnetworkconnection.domain.main.usecase.MainUseCase
@@ -18,8 +19,8 @@ class MainViewModel @Inject constructor(private val mainUseCase: MainUseCase) : 
 
 
 
-    private val _userInfo: MutableLiveData<MainUserInfoEntity> = MutableLiveData()
-    val userInfo: MutableLiveData<MainUserInfoEntity>
+    private val _userInfo: MutableLiveData<ApiResponse<MainUserInfoEntity>> = MutableLiveData()
+    val userInfo: MutableLiveData<ApiResponse<MainUserInfoEntity>>
         get() = _userInfo
 
     fun searchUserInfoResult(owner: String?) {

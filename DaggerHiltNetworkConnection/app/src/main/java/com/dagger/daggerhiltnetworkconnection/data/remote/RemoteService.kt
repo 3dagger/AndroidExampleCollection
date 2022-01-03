@@ -2,6 +2,7 @@ package com.dagger.daggerhiltnetworkconnection.data.remote
 
 import com.dagger.daggerhiltnetworkconnection.data.ApiData
 import com.dagger.daggerhiltnetworkconnection.Constants.PERSONAL_GIT_HUB_TOKEN
+import com.dagger.daggerhiltnetworkconnection.data.network.status.ApiResponse
 import com.dagger.daggerhiltnetworkconnection.domain.main.entity.MainUserInfoEntity
 import com.dagger.daggerhiltnetworkconnection.domain.model.UserRepo
 import retrofit2.Response
@@ -14,14 +15,11 @@ interface RemoteService {
 
     @Headers("Authorization: $PERSONAL_GIT_HUB_TOKEN")
     @GET("${ApiData.API_GITHUB_USER_INFO}{userId}")
-    suspend fun getUserInfo(@Path("userId") userId: String): MainUserInfoEntity
+    suspend fun getUserInfo(@Path("userId") userId: String): ApiResponse<MainUserInfoEntity>
 
-
-
-//    @Headers("Authorization: token $PERSONAL_GIT_HUB_TOKEN")
+//    @Headers("Authorization: $PERSONAL_GIT_HUB_TOKEN")
 //    @GET("${ApiData.API_GITHUB_USER_INFO}{userId}")
-//    suspend fun getUserInfo(@Path("userId") userId: String): ApiResponse<UserInfo>
-
+//    suspend fun getUserInfo(@Path("userId") userId: String): MainUserInfoEntity
 
     @GET(ApiData.API_GITHUB_USER_REPO)
     suspend fun getUserRepos(@Path("owner") owner: String, @Header("Authorization") token: String): List<UserRepo>
@@ -29,39 +27,4 @@ interface RemoteService {
     @GET(ApiData.API_GITHUB_USERS)
     suspend fun getUsers(): Response<MainUserInfoEntity>
 
-
-
-    /**
-     * @author : 이수현
-     * @Date : 2021/12/29 2:48 오전
-     * @Description : 유저 레포지토리 조화
-     * @History :
-     *
-     **/
-//    @GET("users/{owner}/repos")
-//    suspend fun getRepos(@Path("owner") owner: String) : List<GithubRepoRes>
-
-
-    /**
-     *
-     */
-
-    //    @GET("user")
-    //    suspend fun fetchUserOwner(@Header("Authorization") authorization: String): Response<UserInfo>
-    //
-    //    @GET("users/{username}/received_events?")
-    //    suspend fun queryReceivedEvents(@Path("username") username: String,
-    //                                    @Query("page") pageIndex: Int,
-    //                                    @Query("per_page") perPage: Int): List<ReceivedEvent>
-    //
-    //    @GET("users/{username}/repos?")
-    //    suspend fun queryRepos(@Path("username") username: String,
-    //                           @Query("page") pageIndex: Int,
-    //                           @Query("per_page") perPage: Int,
-    //                           @Query("sort") sort: String): List<Repo>
-    //
-    //    @GET("search/repositories")
-    //    suspend fun search(@Query("q") q: String,
-    //                       @Query("page") pageIndex: Int,
-    //                       @Query("per_page") perPage: Int): SearchResult
 }

@@ -42,7 +42,6 @@ object NetworkModule {
             .client(okHttpClient)
             .baseUrl(BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
-//            .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
             .addCallAdapterFactory(ResponseAdapterFactory())
             .build()
     }
@@ -59,11 +58,6 @@ object NetworkModule {
         return retrofit.create(RemoteService::class.java)
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideMainRepository(remoteService: RemoteService): MainRepository {
-//        return MainRepository(remoteService)
-//    }
     @Provides
     @Singleton
     fun provideMainRepository(remoteService: RemoteService): MainRepository {

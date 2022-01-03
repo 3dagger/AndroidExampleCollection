@@ -13,8 +13,7 @@ import javax.inject.Singleton
 class MainRepositoryImpl @Inject constructor(
     private val remoteService: RemoteService,
     private val responseToUserInfo: (ApiResponse<UserInfoResponse>) -> ApiResponse<MainUserInfoEntity>
-) :
-    MainRepository {
+) : MainRepository {
 //    override fun getUserInfo(owner: String?): Flow<ApiResponse<UserInfo>> = flow {
 //        val response = remoteService.getUserInfo(owner?: "3dagger")
 //        emit(response)
@@ -25,8 +24,15 @@ class MainRepositoryImpl @Inject constructor(
 //        emit(responseToUserInfo(response))
 //    }
 
-    override fun getUserInfo(owner: String?): Flow<MainUserInfoEntity> = flow {
-        emit(remoteService.getUserInfo(owner?: "3dagger"))
+//    override fun getUserInfo(owner: String?): Flow<MainUserInfoEntity> = flow {
+//        emit(remoteService.getUserInfo(owner?: "3dagger"))
+//    }
+
+    override fun getUserInfo(owner: String?): Flow<ApiResponse<MainUserInfoEntity>> = flow {
+        val response = remoteService.getUserInfo(owner!!)
+        emit(response)
+//        emit(response)
+//        emit(remoteService.getUserInfo(owner?: "3dagger"))
     }
 
 
