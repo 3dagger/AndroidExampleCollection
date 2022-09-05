@@ -7,6 +7,7 @@ import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -36,13 +37,13 @@ class MainActivity : AppCompatActivity() {
 		appBarConfiguration = AppBarConfiguration(navController.graph)
 		setupActionBarWithNavController(navController, appBarConfiguration)
 
-		binding.fab.setOnClickListener { view ->
-			Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-				.setAnchorView(R.id.fab)
-				.setAction("Action", null).show()
+		binding.toolbar.setOnClickListener {
+			Log.d("leeam", "toolbar clicked")
 		}
 
-		createDynamicShortcut()
+		binding.fab.setOnClickListener { view ->
+			createDynamicShortcut()
+		}
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -95,14 +96,52 @@ class MainActivity : AppCompatActivity() {
 		val sm = getSystemService(ShortcutManager::class.java)
 		val shortcut = ShortcutInfo.Builder(this, "TEST")
 			.setShortLabel("WebSite")
-			.setLongLabel("Open the website")
+			.setLongLabel("First Shortcut")
 			.setDisabledMessage("This shortcut is disabled")
 			.setIcon(Icon.createWithResource(this, R.drawable.ic_baseline_alarm_24))
 			.setIntent(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.naver.com")))
 			.build()
 
-		sm.dynamicShortcuts = listOf(shortcut)
+		val shortcut2 = ShortcutInfo.Builder(this, "TEST2")
+			.setShortLabel("WebSite2")
+			.setLongLabel("Second Shortcut")
+			.setDisabledMessage("This shortcut is disabled")
+			.setIcon(Icon.createWithResource(this, R.drawable.ic_baseline_alarm_24))
+			.setIntent(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.naver.com")))
+			.build()
+
+		val shortcut3 = ShortcutInfo.Builder(this, "TEST3")
+			.setShortLabel("WebSite3")
+			.setLongLabel("Third Shortcut")
+			.setDisabledMessage("This shortcut is disabled")
+			.setIcon(Icon.createWithResource(this, R.drawable.ic_baseline_alarm_24))
+			.setIntent(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.naver.com")))
+			.build()
+
+		sm.dynamicShortcuts = listOf(shortcut, shortcut2, shortcut3)
 	}
 
+	/**
+	 * @author : 이수현
+	 * @Date : 2022/09/05 11:13 오전
+	 * @Description : Disable Dynamic Shortcut
+	 * @History : 
+	 *
+	 **/
+	private fun disableDynamicShortcut() {
+		val sm = getSystemService(ShortcutManager::class.java)
+		sm.disableShortcuts(listOf("TEST", "TEST2"), "DISABLE")
+	}
 
+	/**
+	 * @author : 이수현
+	 * @Date : 2022/09/05 11:13 오전
+	 * @Description : Remove All Dynamic Shortcut
+	 * @History : 
+	 *
+	 **/
+	private fun removeAllDynamicShortcut() {
+		val sm = getSystemService(ShortcutManager::class.java)
+		sm.removeAllDynamicShortcuts()
+	}
 }
