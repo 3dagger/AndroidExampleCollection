@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/simple_graph"
+    app:startDestination="@id/simpleFragmentA">
+
+    <fragment
+        android:id="@+id/simpleFragmentA"
+        android:name="kr.dagger.sharedelementtransitions.SimpleFragmentA"
+        android:label="SimpleFragmentA"
+        tools:layout="@layout/fragment_simple_a">
+        <action
+            android:id="@+id/action_simpleFragmentA_to_simpleFragmentB"
+            app:destination="@id/simpleFragmentB" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/simpleFragmentB"
+        android:name="kr.dagger.sharedelementtransitions.SimpleFragmentB"
+        android:label="SimpleFragmentB"
+        tools:layout="@layout/fragment_simple_b" />
+</navigation>
