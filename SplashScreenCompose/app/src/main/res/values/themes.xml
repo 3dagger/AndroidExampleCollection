@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.SplashScreenCompose" parent="android:Theme.Material.Light.NoActionBar"/>
+
+<!--    <style name="SplashScreenTheme" parent="Theme.SplashScreen">-->
+<!--        <item name="android:statusBarColor">@color/black</item>-->
+<!--        <item name="windowSplashScreenBackground">@color/purple_700</item>-->
+<!--        <item name="windowSplashScreenAnimatedIcon">@drawable/bg_splash_12</item>-->
+<!--        <item name="windowSplashScreenAnimationDuration">5000</item>-->
+<!--        <item name="postSplashScreenTheme">@style/Theme.SplashScreenCompose</item>-->
+<!--    </style>-->
+<!--    <item name="postSplashScreenTheme">@style/Theme.SplashScreenCompose</item>-->
+<!--    <item name="windowSplashScreenBackground">@color/purple_700</item>-->
+<!--    <style name="SplashScreenTheme" parent="Theme.SplashScreenCompose">-->
+<!--        <item name="android:windowBackground">@drawable/bg_splash</item>-->
+<!--    </style>-->
+</resources>
