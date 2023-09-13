@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_move_activity"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:background="@color/material_dynamic_tertiary60"
+            android:text="ACTIVITY"
+            app:layout_constraintBottom_toTopOf="@+id/btn_move_fragment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_move_fragment"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:text="FRAGMENT"
+            android:background="@color/material_dynamic_tertiary60"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_move_activity" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
