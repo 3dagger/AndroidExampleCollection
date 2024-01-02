@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:countDownView="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".MainActivity">
+
+        <kr.dagger.fliptimer.CountDownView
+            android:id="@+id/countDownView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            countDownView:almostFinishedCallbackTimeInSeconds="5"
+            countDownView:animationDuration="850"
+            countDownView:countdownTickInterval="1000"
+            countDownView:digitBottomDrawable="@drawable/background_bottom"
+            countDownView:digitDividerColor="@color/transparent"
+            countDownView:digitPadding="2dp"
+            countDownView:digitTextColor="@color/black"
+            countDownView:digitTextSize="24sp"
+            countDownView:digitTopDrawable="@drawable/background_top"
+            countDownView:digitWidth="28dp"
+            countDownView:halfDigitHeight="22dp"
+            countDownView:resetSymbol="8"
+            countDownView:splitterPadding="0dp" />
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STOP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/countDownView" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
+
